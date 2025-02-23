@@ -1,3 +1,4 @@
+using Unity.Android.Gradle.Manifest;
 using UnityEngine;
 
 public class Projectile : MonoBehaviour
@@ -21,7 +22,15 @@ public class Projectile : MonoBehaviour
 
         if (layerName == "Enemy")
         {
-            EnemyManager.Instance.RegisterDestroyedEnemy();
+            EnemyData data = other.gameObject.GetComponentInParent<EnemyData>();
+            if (data != null)
+            {
+                EnemyManager.Instance.RegisterDestroyedEnemy(data.EnemyID);
+            } else
+            {
+                Debug.Log("EnemyData is null");
+            }
+
             Destroy(other.gameObject);  // Destroy the enemy
             Destroy(gameObject);        // Destroy the projectile
 

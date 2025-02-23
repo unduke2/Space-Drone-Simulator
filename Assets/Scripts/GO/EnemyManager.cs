@@ -1,16 +1,16 @@
-using NUnit.Framework;
-using UnityEngine;
 using System.Collections.Generic;
-using Unity.VisualScripting;
-using UnityEngine.PlayerLoop;
+using UnityEngine;
+
 
 public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager Instance;
 
-    private int _destroyedEnemies = 0;
+    private List<int> _destroyedEnemiesID;
 
-    private int _enemiesToRespawn = 0;
+
+
+    private int _destroyedEnemiesCount = 0;
 
     public int AmountForVictory = 10;
 
@@ -18,6 +18,11 @@ public class EnemyManager : MonoBehaviour
     [SerializeField] private float _respawnTime;
     private float _respawnTimer;
 
+    [SerializeField] private int EnemyCount;
+    [SerializeField] private float _bounds;
+    public Transform PlayerTransform;
+
+    private GameObject[] _enemies;
 
     private void Awake()
     {
@@ -34,17 +39,39 @@ public class EnemyManager : MonoBehaviour
     private void Start()
     {
         _respawnTimer = _respawnTime;
+        _enemies = new GameObject[EnemyCount];
+        _destroyedEnemiesID = new List<int>();
+        for (int i = 0; i < _enemies.Length; i++)
+        {
+
+            SpawnEnemy(i, out _enemies[i]);
+
+
+
+        }
+    }
+
+    private void SpawnEnemy(int id, out GameObject enemy)
+    {
+        GameObject enemyGO = Instantiate(_enemyPrefab, GetRandomSpawnPosition(), Quaternion.identity);
+        var enemyMovement = enemyGO.GetComponent<EnemyMovement>();
+        var enemyData = enemyGO.GetComponent<EnemyData>();
+        enemyData.EnemyID = id;
+        enemyMovement.SetPlayerTransform(PlayerTransform);
+        enemy = enemyGO;
+        Debug.Log("Spawned enemy!");
+
     }
     private void Update()
     {
         _respawnTimer -= Time.deltaTime;
-        if (_respawnTimer <= 0 && _destroyedEnemies > 0)
+        if (_respawnTimer <= 0 && _destroyedEnemiesID.Count > 0)
         {
             RespawnEnemies();
             _respawnTimer = _respawnTime;
         }
 
-        if (_destroyedEnemies >= AmountForVictory)
+        if (_destroyedEnemiesCount >= AmountForVictory)
         {
             Debug.Log("You won!");
         }
@@ -52,23 +79,26 @@ public class EnemyManager : MonoBehaviour
 
     private void RespawnEnemies()
     {
-        for (int i = 0; i < _enemiesToRespawn; i++)
+        Debug.Log($"Respawning {_destroyedEnemiesID.Count} enemies ");
+        foreach (var id in _destroyedEnemiesID)
         {
-            Instantiate(_enemyPrefab, GetRandomSpawnPosition(), Quaternion.identity);
-            Debug.Log("Spawned new enemy!");
+            SpawnEnemy(id, out GameObject enemy);
+            _enemies[id] = enemy;
         }
-        _enemiesToRespawn = 0;
+        _destroyedEnemiesID.Clear();
+
     }
-    public void RegisterDestroyedEnemy()
+    public void RegisterDestroyedEnemy(int enemyID)
     {
-        _destroyedEnemies++;
-        _enemiesToRespawn++;
+        Debug.Log($"Registering destroyed enemy with ID: {enemyID}");
+        _destroyedEnemiesID.Add(enemyID);
+        _destroyedEnemiesCount++;
 
     }
     private Vector3 GetRandomSpawnPosition()
     {
         // Just for example, you can spawn at a random position within a certain range
-        float range = 10f;
-        return new Vector3(Random.Range(-range, range), 0, Random.Range(-range, range));
+        float range = _bounds;
+        return new Vector3(Random.Range(-range, range), Random.Range(-range, range), Random.Range(-range, range));
     }
 }
