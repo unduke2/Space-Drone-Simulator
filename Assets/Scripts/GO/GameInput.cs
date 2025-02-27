@@ -11,6 +11,7 @@ public class GameInput : MonoBehaviour
     private InputAction _boostAction;
     private InputAction _lookAction;
     private InputAction _fireAction;
+    private InputAction _viewAction;
 
 
     public Vector2 MoveInput { get; private set; }
@@ -19,6 +20,8 @@ public class GameInput : MonoBehaviour
     public bool IsBoostPressed { get; private set; }
 
     public bool IsFirePressed { get; private set; }
+
+    public bool IsViewPressed { get; private set; } 
 
 
     private void Awake()
@@ -44,16 +47,21 @@ public class GameInput : MonoBehaviour
         _boostAction = InputSystem.actions.FindAction("Boost");
         _lookAction = InputSystem.actions.FindAction("Look");
         _fireAction = InputSystem.actions.FindAction("Fire");
+        _viewAction = InputSystem.actions.FindAction("View");
         _boostAction.performed += OnBoost;
         _boostAction.canceled += OnBoost;
         _fireAction.performed += OnFire;
         _fireAction.canceled += OnFire;
+        _viewAction.performed += OnView;
+        _viewAction.canceled += OnView;
+
 
 
         _moveAction.Enable();
         _boostAction.Enable();
         _lookAction.Enable();
         _fireAction.Enable();
+        _viewAction.Enable();
 
 
     }
@@ -64,11 +72,14 @@ public class GameInput : MonoBehaviour
         _boostAction.Disable();
         _lookAction.Disable();
         _fireAction.Disable();
+        _viewAction.Disable();
 
         _boostAction.performed -= OnBoost;
         _boostAction.canceled -= OnBoost;
         _fireAction.performed -= OnFire;
         _fireAction.canceled -= OnFire;
+        _viewAction.performed -= OnView;
+        _viewAction.canceled -= OnView;
     }
 
     private void Update()
@@ -77,14 +88,19 @@ public class GameInput : MonoBehaviour
         LookInput = _lookAction.ReadValue<Vector2>();
     }
 
-    public void OnBoost(InputAction.CallbackContext context)
+    public void OnBoost(InputAction.CallbackContext ctx)
     {
-        IsBoostPressed = context.performed;
+        IsBoostPressed = ctx.performed;
     }
 
-    public void OnFire(InputAction.CallbackContext context)
+    public void OnFire(InputAction.CallbackContext ctx)
     {
-        IsFirePressed = context.performed;
+        IsFirePressed = ctx.performed;
+    }
+
+    public void OnView(InputAction.CallbackContext ctx)
+    {
+        IsViewPressed = ctx.performed;
     }
 
 }

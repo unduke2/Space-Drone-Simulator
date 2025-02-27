@@ -2,7 +2,8 @@ using UnityEngine;
 
 public class PlayerCamera : MonoBehaviour
 {
-    [SerializeField] private Transform _followTarget;
+    [SerializeField] private Transform _shipFollowTarget;
+    [SerializeField] private Transform _turretFollowTarget;
     [SerializeField] private float _smoothStep;
     float _minVelocity = 0f;
     float _maxVelocity = 300f;
@@ -10,6 +11,8 @@ public class PlayerCamera : MonoBehaviour
     float _maxFOV = 120f;
     public float _currentFOV;
     private float _targetFOV;
+    private bool _isAiming = false;
+    private bool _updatedView = false;
     void Start()
     {
         _targetFOV = Camera.main.fieldOfView;
@@ -18,11 +21,29 @@ public class PlayerCamera : MonoBehaviour
     // Update is called once per frame
     private void Update()
     {
+        Debug.Log(_isAiming);
+        if (GameInput.Instance.IsViewPressed && _updatedView == false) 
+        {
+            _updatedView = true;
+            _isAiming = !_isAiming;
 
+        }
+        if (!GameInput.Instance.IsViewPressed)
+        {
+            _updatedView = false;
+        }
 
+        if (_isAiming)
+        {
+            transform.position = _turretFollowTarget.position;
+            transform.rotation = _turretFollowTarget.rotation;
+        }
+        else
+        {
 
-        transform.position = Vector3.Lerp(transform.position, _followTarget.position, _smoothStep * Time.deltaTime);
-        transform.rotation = Quaternion.Lerp(transform.rotation, _followTarget.rotation, _smoothStep * Time.deltaTime);
+            transform.position = Vector3.Lerp(transform.position, _shipFollowTarget.position, _smoothStep * Time.deltaTime);
+            transform.rotation = Quaternion.Lerp(transform.rotation, _shipFollowTarget.rotation, _smoothStep * Time.deltaTime);
+        }
 
     }
 
