@@ -10,7 +10,6 @@ public partial struct SpawnerSystem : ISystem
         state.RequireForUpdate<SpawnerConfig>();
     }
 
-
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
@@ -18,6 +17,8 @@ public partial struct SpawnerSystem : ISystem
 
         var config = SystemAPI.GetSingleton<SpawnerConfig>();
         var rand = new Random((uint)UnityEngine.Random.Range(1, int.MaxValue));
+
+        float minY = 100f;
 
         for (int i = 0; i < config.Count; i++)
         {
@@ -36,14 +37,16 @@ public partial struct SpawnerSystem : ISystem
                 state.EntityManager.AddComponent<EnemyTag>(droneEntity);
             }
 
+            float3 position = new float3
+            {
+                x = rand.NextFloat(-config.Bound, config.Bound),
+                y = rand.NextFloat(minY, config.Bound),
+                z = rand.NextFloat(-config.Bound, config.Bound)
+            };
+
             state.EntityManager.SetComponentData(droneEntity, new LocalTransform
             {
-                Position = new float3
-                {
-                    x = rand.NextFloat(-config.Bound, config.Bound),
-                    y = rand.NextFloat(100, config.Bound),
-                    z = rand.NextFloat(-config.Bound, config.Bound),
-                },
+                Position = position,
                 Rotation = quaternion.identity,
                 Scale = 1f,
             });
