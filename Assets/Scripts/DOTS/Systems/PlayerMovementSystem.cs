@@ -20,7 +20,7 @@ public partial struct PlayerMovementSystem : ISystem
         foreach (var (transform, movementData, playerMovementData) in SystemAPI.Query<RefRW<LocalTransform>, RefRW<MovementData>, RefRO<PlayerMovementData>>().WithPresent<PlayerMovementData>().WithAll<PlayerTag>())
         {
             var forward = transform.ValueRO.Forward();
-            bool isBoosting = Input.GetButtonDown("Jump");
+            bool isBoosting = Input.GetButton("Jump");
 
             _speedMultiplier = isBoosting ? playerMovementData.ValueRO.BoostMultiplier : 1f;
 

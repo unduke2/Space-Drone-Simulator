@@ -133,7 +133,7 @@ MonoBehaviour:
   m_Name: 
   m_EditorClassIdentifier: 
   MaxFOV: 60
-  MinFOV: 120
+  MinFOV: 140
   FollowStep: 15
   FollowOffset: {x: 0, y: 10, z: -25}
   FollowTarget: {fileID: 7215114633856517583}
@@ -159,6 +159,7 @@ GameObject:
   serializedVersion: 6
   m_Component:
   - component: {fileID: 7407352805848444594}
+  - component: {fileID: 4335109555823280544}
   m_Layer: 0
   m_Name: Follow
   m_TagString: Untagged
@@ -181,6 +182,18 @@ Transform:
   m_Children: []
   m_Father: {fileID: 639607897723156734}
   m_LocalEulerAnglesHint: {x: 15, y: 0, z: 0}
+--- !u!114 &4335109555823280544
+MonoBehaviour:
+  m_ObjectHideFlags: 0
+  m_CorrespondingSourceObject: {fileID: 0}
+  m_PrefabInstance: {fileID: 0}
+  m_PrefabAsset: {fileID: 0}
+  m_GameObject: {fileID: 7215114633856517583}
+  m_Enabled: 1
+  m_EditorHideFlags: 0
+  m_Script: {fileID: 11500000, guid: 3cd9581c1bfbf9b4493e5c51accb1450, type: 3}
+  m_Name: 
+  m_EditorClassIdentifier: 
 --- !u!1001 &7187259659818706129
 PrefabInstance:
   m_ObjectHideFlags: 0

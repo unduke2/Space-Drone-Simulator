@@ -1,5 +1,7 @@
+﻿using Unity.Entities;
 using UnityEngine;
-using Unity.Entities;
+using UnityEngine.Rendering.Universal.Internal;
+
 public class CameraAuthoring : MonoBehaviour
 {
     public float MaxFOV;

@@ -16,10 +16,15 @@ public partial struct TurretSystem : ISystem
 
     public void OnUpdate(ref SystemState state)
     {
+        if (!SystemAPI.TryGetSingleton<SpawnerConfig>(out var spawnerConfig))
+        {
+            return;
+        }
+
         _elapsedTime += Time.deltaTime;
 
         var ecbSingleton = SystemAPI.GetSingleton<EndSimulationEntityCommandBufferSystem.Singleton>();
-        var spawnerConfig = SystemAPI.GetSingleton<SpawnerConfig>();
+
         var ecb = ecbSingleton.CreateCommandBuffer(state.World.Unmanaged);
 
         foreach (var turretData in SystemAPI.Query<RefRO<TurretData>>().WithAll<PlayerTag>())

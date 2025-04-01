@@ -5,19 +5,18 @@ using Unity.Transforms;
 
 public partial struct SpawnerSystem : ISystem
 {
-    public void OnCreate(ref SystemState state)
-    {
-        state.RequireForUpdate<SpawnerConfig>();
-    }
-
     [BurstCompile]
     public void OnUpdate(ref SystemState state)
     {
-        state.Enabled = false;
+        if (!SystemAPI.TryGetSingleton<SpawnerConfig>(out var config))
+        {
+            state.Enabled = false;
+            return;
+        }
 
-        var config = SystemAPI.GetSingleton<SpawnerConfig>();
+        state.Enabled = false; 
+
         var rand = new Random((uint)UnityEngine.Random.Range(1, int.MaxValue));
-
         float minY = 100f;
 
         for (int i = 0; i < config.Count; i++)
@@ -48,7 +47,7 @@ public partial struct SpawnerSystem : ISystem
             {
                 Position = position,
                 Rotation = quaternion.identity,
-                Scale = 1f,
+                Scale = 1f
             });
         }
     }

@@ -565,12 +565,12 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: eb899133ba7e8524c82944500811d31e, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
+  PlayerTransform: {fileID: 2031826372}
   AmountForVictory: 10
   _enemyPrefab: {fileID: 9155407816298299468, guid: e0306db2910c3754ca13835a96d37da7, type: 3}
   _respawnTime: 5
-  EnemyCount: 50000
-  _bounds: 100
-  PlayerTransform: {fileID: 2031826372}
+  _bounds: 1000
+  EnemyCount: 10000
 --- !u!4 &1414300956
 Transform:
   m_ObjectHideFlags: 0

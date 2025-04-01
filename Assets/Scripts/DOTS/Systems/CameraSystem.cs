@@ -1,4 +1,4 @@
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
@@ -11,26 +11,36 @@ public partial struct CameraSystem : ISystem
         Cursor.lockState = CursorLockMode.Locked;
     }
 
-
     public void OnUpdate(ref SystemState state)
     {
         float deltaTime = SystemAPI.Time.DeltaTime;
-        foreach (var (movementData, cameraData) in SystemAPI.Query<RefRO<MovementData>, RefRO<CameraData>>().WithPresent<CameraData>().WithAll<PlayerTag>())
+        float alpha = math.clamp(deltaTime / Time.fixedDeltaTime, 0f, 1f);
+
+        foreach (var (movementData, cameraData) in
+                 SystemAPI.Query<RefRO<MovementData>, RefRO<CameraData>>()
+                 .WithAll<PlayerTag>())
         {
+            Entity followTarget = cameraData.ValueRO.FollowTarget;
 
-            var followTransform = state.EntityManager.GetComponentData<LocalToWorld>(cameraData.ValueRO.FollowTarget);
+            if (!state.EntityManager.HasComponent<PreviousTransform>(followTarget))
+                continue;
 
-            Camera.main.transform.position = followTransform.Position;
-            Camera.main.transform.rotation = followTransform.Rotation;
+            var current = state.EntityManager.GetComponentData<LocalToWorld>(followTarget);
+            var previous = state.EntityManager.GetComponentData<PreviousTransform>(followTarget);
+
+            float3 interpolatedPosition = math.lerp(previous.Position, current.Position, alpha);
+            quaternion interpolatedRotation = math.slerp(previous.Rotation, current.Rotation, alpha);
+
+            float3 finalPosition = interpolatedPosition;
+
+            Camera.main.transform.position = finalPosition;
+            Camera.main.transform.rotation = interpolatedRotation;
 
             float velocityMagnitude = math.length(movementData.ValueRO.Velocity);
-            float ratio = math.unlerp(300f, 0f, velocityMagnitude);
-            float smoothed = math.smoothstep(0f, 1f, ratio);
+            float t = math.unlerp(0f, 300f, velocityMagnitude);
+            float smooth = math.smoothstep(1f, 0f, t);
 
-            Camera.main.fieldOfView = math.lerp(cameraData.ValueRO.MinFOV,
-                cameraData.ValueRO.MaxFOV,
-                smoothed
-                );
+            Camera.main.fieldOfView = math.lerp(cameraData.ValueRO.MinFOV, cameraData.ValueRO.MaxFOV, smooth);
         }
     }
 }
