@@ -148,7 +148,7 @@ MonoBehaviour:
   m_Script: {fileID: 11500000, guid: 714db5f0e006f0243929cded6eb059cc, type: 3}
   m_Name: 
   m_EditorClassIdentifier: 
-  Count: 100
+  Count: 50000
   Bound: 1000
   DronePrefab: {fileID: 4758912156667136649, guid: b7c3297f0fad3e543acbbcaba0595b17, type: 3}
   ProjectilePrefab: {fileID: 5306105835790945355, guid: 9a48b81b6c1592d4b98a76cfffe78641, type: 3}

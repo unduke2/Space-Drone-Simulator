@@ -6,23 +6,25 @@ public class EnemyManager : MonoBehaviour
 {
     public static EnemyManager Instance;
 
-    private List<int> _destroyedEnemiesID;
-
-
-
-    private int _destroyedEnemiesCount = 0;
+    public Transform PlayerTransform;
 
     public int AmountForVictory = 10;
 
     [SerializeField] private GameObject _enemyPrefab;
+
     [SerializeField] private float _respawnTime;
-    private float _respawnTimer;
+    [SerializeField] private float _bounds;
 
     [SerializeField] private int EnemyCount;
-    [SerializeField] private float _bounds;
-    public Transform PlayerTransform;
+
+    private float _respawnTimer;
 
     private GameObject[] _enemies;
+
+    private List<int> _destroyedEnemiesID;
+
+    private int _destroyedEnemiesCount = 0;
+
 
     private void Awake()
     {
@@ -36,6 +38,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+
     private void Start()
     {
         _respawnTimer = _respawnTime;
@@ -45,11 +48,9 @@ public class EnemyManager : MonoBehaviour
         {
 
             SpawnEnemy(i, out _enemies[i]);
-
-
-
         }
     }
+
 
     private void SpawnEnemy(int id, out GameObject enemy)
     {
@@ -62,6 +63,8 @@ public class EnemyManager : MonoBehaviour
         Debug.Log("Spawned enemy!");
 
     }
+
+
     private void Update()
     {
         _respawnTimer -= Time.deltaTime;
@@ -77,6 +80,7 @@ public class EnemyManager : MonoBehaviour
         }
     }
 
+
     private void RespawnEnemies()
     {
         Debug.Log($"Respawning {_destroyedEnemiesID.Count} enemies ");
@@ -86,18 +90,19 @@ public class EnemyManager : MonoBehaviour
             _enemies[id] = enemy;
         }
         _destroyedEnemiesID.Clear();
-
     }
+
+
     public void RegisterDestroyedEnemy(int enemyID)
     {
         Debug.Log($"Registering destroyed enemy with ID: {enemyID}");
         _destroyedEnemiesID.Add(enemyID);
         _destroyedEnemiesCount++;
-
     }
+
+
     private Vector3 GetRandomSpawnPosition()
     {
-        // Just for example, you can spawn at a random position within a certain range
         float range = _bounds;
         return new Vector3(Random.Range(-range, range), Random.Range(-range, range), Random.Range(-range, range));
     }

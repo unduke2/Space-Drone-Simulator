@@ -568,8 +568,8 @@ MonoBehaviour:
   AmountForVictory: 10
   _enemyPrefab: {fileID: 9155407816298299468, guid: e0306db2910c3754ca13835a96d37da7, type: 3}
   _respawnTime: 5
-  EnemyCount: 100
-  _bounds: 1000
+  EnemyCount: 50000
+  _bounds: 100
   PlayerTransform: {fileID: 2031826372}
 --- !u!4 &1414300956
 Transform:

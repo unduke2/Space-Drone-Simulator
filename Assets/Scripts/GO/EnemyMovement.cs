@@ -4,6 +4,7 @@ using UnityEngine;
 public class EnemyMovement : MonoBehaviour
 {
     private EnemyData _enemyData;
+
     [SerializeField] private float _movementSpeed = 10f;
     [SerializeField] private float _yawSpeed = 2f;
     [SerializeField] private float _pitchSpeed = 1f;
@@ -13,6 +14,7 @@ public class EnemyMovement : MonoBehaviour
 
     private Transform _playerTransform;
 
+
     private void Start()
     {
         _enemyData = GetComponent<EnemyData>();
@@ -20,10 +22,12 @@ public class EnemyMovement : MonoBehaviour
         randomDirection = new Vector3(Random.Range(-1f, 1f), Random.Range(-1f, 1f), Random.Range(-1f, 1f)).normalized;
     }
 
+
     public void SetPlayerTransform(Transform playerTransform)
     {
         _playerTransform = playerTransform;
     }
+
 
     private void Update()
     {

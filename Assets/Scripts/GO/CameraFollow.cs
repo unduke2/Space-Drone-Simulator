@@ -13,15 +13,16 @@ public class PlayerCamera : MonoBehaviour
     private float _targetFOV;
     private bool _isAiming = false;
     private bool _updatedView = false;
+
+
     void Start()
     {
         _targetFOV = Camera.main.fieldOfView;
     }
 
-    // Update is called once per frame
+
     private void Update()
     {
-        Debug.Log(_isAiming);
         if (GameInput.Instance.IsViewPressed && _updatedView == false) 
         {
             _updatedView = true;
@@ -46,6 +47,7 @@ public class PlayerCamera : MonoBehaviour
         }
 
     }
+
 
     public void UpdateFOV(float velocityMagnitude)
     {

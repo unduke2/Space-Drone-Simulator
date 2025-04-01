@@ -4,6 +4,7 @@ using UnityEngine;
 public class Projectile : MonoBehaviour
 {
     public Vector3 Velocity;
+
     [SerializeField] private float _destroyTimer;
 
     private void Update()
@@ -15,6 +16,7 @@ public class Projectile : MonoBehaviour
         }
         transform.Translate(Velocity, Space.World);
     }
+
 
     private void OnTriggerEnter(Collider other)
     {
@@ -31,14 +33,14 @@ public class Projectile : MonoBehaviour
                 Debug.Log("EnemyData is null");
             }
 
-            Destroy(other.gameObject);  // Destroy the enemy
-            Destroy(gameObject);        // Destroy the projectile
+            Destroy(other.gameObject);  
+            Destroy(gameObject);     
 
             Debug.Log("Collided with enemy");
         }
         else if (layerName == "Level")
         {
-            Destroy(gameObject);        // Destroy the projectile if hitting level
+            Destroy(gameObject);  
             Debug.Log("Collided with level");
         }
     }

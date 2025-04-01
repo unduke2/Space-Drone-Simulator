@@ -5,12 +5,12 @@ public class PlayerCombat : MonoBehaviour
 {
     [SerializeField] private GameObject _projectilePrefab;
     [SerializeField] private GameObject _turret;
-    [SerializeField] private float _projectileSpeed;
-    private bool IsFirePressed;
 
+    [SerializeField] private float _projectileSpeed;
+    [SerializeField] private float _fireRate;
     private float _nextFireTime = 0f;
 
-    [SerializeField] private float _fireRate;
+    private bool IsFirePressed;
 
 
     private void Update()
@@ -21,6 +21,8 @@ public class PlayerCombat : MonoBehaviour
             HandleFire();
         }
     }
+
+
     private void HandleFire()
     {
         if (InCooldown())
@@ -39,6 +41,7 @@ public class PlayerCombat : MonoBehaviour
 
         _nextFireTime = Time.time + (1/_fireRate);
     }
+
 
     private bool InCooldown()
     {

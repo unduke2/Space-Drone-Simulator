@@ -38,11 +38,9 @@ public class GameInput : MonoBehaviour
 
     }
 
+
     private void Start()
     {
-
-
-
         _moveAction = InputSystem.actions.FindAction("Move");
         _boostAction = InputSystem.actions.FindAction("Boost");
         _lookAction = InputSystem.actions.FindAction("Look");
@@ -62,9 +60,8 @@ public class GameInput : MonoBehaviour
         _lookAction.Enable();
         _fireAction.Enable();
         _viewAction.Enable();
-
-
     }
+
 
     private void OnDisable()
     {
@@ -82,25 +79,28 @@ public class GameInput : MonoBehaviour
         _viewAction.canceled -= OnView;
     }
 
+
     private void Update()
     {
         MoveInput = _moveAction.ReadValue<Vector2>();
         LookInput = _lookAction.ReadValue<Vector2>();
     }
 
+
     public void OnBoost(InputAction.CallbackContext ctx)
     {
         IsBoostPressed = ctx.performed;
     }
+
 
     public void OnFire(InputAction.CallbackContext ctx)
     {
         IsFirePressed = ctx.performed;
     }
 
+
     public void OnView(InputAction.CallbackContext ctx)
     {
         IsViewPressed = ctx.performed;
     }
-
 }
