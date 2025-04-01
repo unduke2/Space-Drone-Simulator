@@ -17,30 +17,19 @@ public partial struct CameraSystem : ISystem
         float deltaTime = SystemAPI.Time.DeltaTime;
         foreach (var (movementData, cameraData) in SystemAPI.Query<RefRO<MovementData>, RefRO<CameraData>>().WithPresent<CameraData>().WithAll<PlayerTag>())
         {
-            var followTarget = state.EntityManager.GetComponentData<LocalToWorld>(cameraData.ValueRO.FollowTarget);
 
-            Vector3 newPos = math.lerp(
-                Camera.main.transform.position,
-                followTarget.Position,
-                deltaTime * cameraData.ValueRO.FollowStep
-            );
+            var followTransform = state.EntityManager.GetComponentData<LocalToWorld>(cameraData.ValueRO.FollowTarget);
 
-            Quaternion newRot = math.slerp(
-                Camera.main.transform.rotation,
-                followTarget.Rotation,
-                deltaTime * cameraData.ValueRO.FollowStep
-            );
-
-            Camera.main.transform.position = newPos;
-            Camera.main.transform.rotation = newRot;
+            Camera.main.transform.position = followTransform.Position;
+            Camera.main.transform.rotation = followTransform.Rotation;
 
             float velocityMagnitude = math.length(movementData.ValueRO.Velocity);
-            float t = math.unlerp(0f, 300f, velocityMagnitude);
-            float smoothT = math.smoothstep(0, 1, 1 / t);
+            float ratio = math.unlerp(300f, 0f, velocityMagnitude);
+            float smoothed = math.smoothstep(0f, 1f, ratio);
 
             Camera.main.fieldOfView = math.lerp(cameraData.ValueRO.MinFOV,
                 cameraData.ValueRO.MaxFOV,
-                smoothT
+                smoothed
                 );
         }
     }
