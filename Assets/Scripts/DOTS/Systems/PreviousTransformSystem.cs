@@ -3,7 +3,6 @@ using Unity.Transforms;
 using Unity.Mathematics;
 
 [UpdateAfter(typeof(PlayerMovementSystem))]
-[UpdateBefore(typeof(CameraSystem))]
 public partial struct PreviousTransformSystem : ISystem
 {
     public void OnCreate(ref SystemState state)

@@ -1,6 +1,6 @@
 namespace Implementation.GameObject
 {
-
+    using Unity.VisualScripting;
     using UnityEngine;
 
     public class PlayerMovement : MonoBehaviour
@@ -9,6 +9,8 @@ namespace Implementation.GameObject
 
         private Vector3 _velocity;
 
+        [SerializeField] private float _minPitch;
+        [SerializeField] private float _maxPitch;
         [SerializeField] private float _invertDirSpeed;
         [SerializeField] private float _acceleration;
         [SerializeField] private float _topSpeed;
@@ -23,8 +25,17 @@ namespace Implementation.GameObject
         [SerializeField] private float _slowDownFactor;
 
 
+
+        [SerializeField] private AudioSource _droneSource;
+        [SerializeField] private AudioClip _flyingSound;
+
+
         void Start()
         {
+            _droneSource.clip = _flyingSound;
+            _droneSource.loop = true;
+            _droneSource.Play(); 
+
 
             Cursor.lockState = CursorLockMode.Locked;
         }
@@ -71,6 +82,12 @@ namespace Implementation.GameObject
             {
                 _velocity = Vector3.zero;
             }
+
+            float speed = _velocity.magnitude;
+            float normalized = Mathf.Clamp01(speed / (_topSpeed * _boostMultiplier));
+
+            _droneSource.pitch = Mathf.Lerp(_minPitch, _maxPitch, normalized);
+            _droneSource.volume = normalized;
 
             _playerCamera.UpdateFOV(_velocity.magnitude);
 

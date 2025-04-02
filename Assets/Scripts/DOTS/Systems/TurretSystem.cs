@@ -1,4 +1,4 @@
-using Unity.Entities;
+﻿using Unity.Entities;
 using Unity.Mathematics;
 using Unity.Transforms;
 using UnityEngine;
@@ -59,6 +59,10 @@ public partial struct TurretSystem : ISystem
                 DestroyTimer = turretData.ValueRO.ProjectileDestroyTimer,
 
             });
+
+            ecb.AddComponent<FireAudioTag>(turretEntity); 
+
+
 
             _nextFireTime = _elapsedTime + (1 / turretData.ValueRO.FireRate);
         }

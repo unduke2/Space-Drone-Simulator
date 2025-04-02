@@ -21,6 +21,7 @@ public class TurretAuthoring : MonoBehaviour
                 FireRate = authoring.FireRate,
                 ProjectileSpeed = authoring.ProjectileSpeed,
                 ProjectileDestroyTimer = authoring.DestroyTimer,
+                
             });
 
 
