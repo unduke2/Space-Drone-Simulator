@@ -20,14 +20,6 @@ public class DroneAuthoring : MonoBehaviour
                 
 
             });
-
-
-            //AddComponent(entity, new TurretData
-            //{
-            //    TurretEntity = GetEntity(authoring.Turret, TransformUsageFlags.Dynamic),
-                
-          
-            //});
             
         }
     }
