@@ -56,8 +56,7 @@ Simulates thousands of drones flying in 3D space — with dynamic movement, turr
 ---
 
 ## Contact
-
-- **Name**: João Yakubets  
+ 
 - **Email**: unduke2@tuta.io
 
 ---
